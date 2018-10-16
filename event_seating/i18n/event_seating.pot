@@ -1,0 +1,351 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* event_seating
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-10-16 10:40+0000\n"
+"PO-Revision-Date: 2018-10-16 10:40+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: event_seating
+#: model:ir.ui.view,arch_db:event_seating.go_to_backend
+msgid "<i class=\"fa fa-arrow-right\"/> Go to backend"
+msgstr ""
+
+#. module: event_seating
+#: sql_constraint:event.registration.seat:0
+msgid "A seat can only be used once by event"
+msgstr ""
+
+#. module: event_seating
+#: code:addons/event_seating/models/theater.py:140
+#, python-format
+msgid "All lines in disposition must have the same length. Use \"_\" to fill the line."
+msgstr ""
+
+#. module: event_seating
+#: code:addons/event_seating/models/theater.py:148
+#, python-format
+msgid "All used characters in disposition (except \"_\") must have a seat name."
+msgstr ""
+
+#. module: event_seating
+#: model:ir.ui.view,arch_db:event_seating.seat_selection
+msgid "Assign!"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.model,name:event_seating.model_event_registration
+msgid "Attendee"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.ui.view,arch_db:event_seating.seat_selection
+msgid "Attendees"
+msgstr ""
+
+#. module: event_seating
+#: code:addons/event_seating/models/theater.py:88
+#, python-format
+msgid "Booked"
+msgstr ""
+
+#. module: event_seating
+#: selection:event.theater,display_selected:0
+msgid "Both"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.ui.view,arch_db:event_seating.view_event_event_form
+msgid "Compute seating"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.model.fields,field_description:event_seating.field_event_registration_seat_create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.model.fields,field_description:event_seating.field_event_registration_seat_create_date
+msgid "Created on"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.ui.view,arch_db:event_seating.seat_selection
+msgid "Date"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.model.fields,field_description:event_seating.field_event_registration_seat_display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.ui.view,arch_db:event_seating.seat_selection
+msgid "Display on map"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.model.fields,field_description:event_seating.field_event_theater_display_selected
+msgid "Display selected seats"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.ui.view,arch_db:event_seating.view_event_theater_form
+msgid "Disposition"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.model,name:event_seating.model_event_event
+#: model:ir.model.fields,field_description:event_seating.field_event_registration_seat_event_id
+msgid "Event"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.ui.view,arch_db:event_seating.seat_map
+msgid "Front"
+msgstr ""
+
+#. module: event_seating
+#: selection:event.theater,display_selected:0
+msgid "Group"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.model.fields,field_description:event_seating.field_event_registration_seat_id
+msgid "ID"
+msgstr ""
+
+#. module: event_seating
+#: code:addons/event_seating/models/event.py:185
+#, python-format
+msgid "Impossible to find seats for registration %s (%s). Try to set seats manually before running the seating algorithm."
+msgstr ""
+
+#. module: event_seating
+#: model:ir.ui.view,arch_db:event_seating.seat_selection
+msgid "Informations"
+msgstr ""
+
+#. module: event_seating
+#. openerp-web
+#: code:addons/event_seating/static/src/js/seating.js:307
+#: code:addons/event_seating/static/src/js/seating.js:311
+#, python-format
+msgid "Invalid value for the attendee."
+msgstr ""
+
+#. module: event_seating
+#: model:ir.model.fields,field_description:event_seating.field_event_registration_seat_label
+msgid "Label"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.model.fields,field_description:event_seating.field_event_registration_seat___last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.model.fields,field_description:event_seating.field_event_registration_seat_write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.model.fields,field_description:event_seating.field_event_registration_seat_write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.ui.view,arch_db:event_seating.preview
+#: model:ir.ui.view,arch_db:event_seating.seat_selection
+msgid "Legend"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.ui.view,arch_db:event_seating.seat_selection
+msgid "Name"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.model.fields,field_description:event_seating.field_event_registration_seats_count
+msgid "Number of seats"
+msgstr ""
+
+#. module: event_seating
+#. openerp-web
+#: code:addons/event_seating/static/src/js/seating.js:300
+#, python-format
+msgid "Please select attendee first."
+msgstr ""
+
+#. module: event_seating
+#. openerp-web
+#: code:addons/event_seating/static/src/js/seating.js:292
+#, python-format
+msgid "Please select seats first."
+msgstr ""
+
+#. module: event_seating
+#: model:ir.ui.view,arch_db:event_seating.view_event_theater_form
+msgid "Preview"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.model.fields,field_description:event_seating.field_event_registration_seat_registration_id
+msgid "Registration"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.model.fields,field_description:event_seating.field_event_registration_seat_seat_id
+msgid "Seat"
+msgstr ""
+
+#. module: event_seating
+#: code:addons/event_seating/models/event.py:276
+#, python-format
+msgid "Seat is not linked to the same theater than the one in the event."
+msgstr ""
+
+#. module: event_seating
+#: model:ir.ui.view,arch_db:event_seating.seat_selection
+msgid "Seat selection for event \""
+msgstr ""
+
+#. module: event_seating
+#: model:ir.ui.view,arch_db:event_seating.seat_selection
+msgid "Seated"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.ui.view,arch_db:event_seating.view_event_event_form
+msgid "Seating"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.ui.view,arch_db:event_seating.seat_selection
+msgid "Seating for event \""
+msgstr ""
+
+#. module: event_seating
+#: model:ir.model.fields,field_description:event_seating.field_event_registration_seat_ids
+#: model:ir.ui.view,arch_db:event_seating.seat_selection
+#: model:ir.ui.view,arch_db:event_seating.view_event_theater_form
+msgid "Seats"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.ui.view,arch_db:event_seating.seat_selection
+msgid "Seats (<span id=\"seats_counter\">0</span>)"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.ui.view,arch_db:event_seating.seat_selection
+msgid "Select"
+msgstr ""
+
+#. module: event_seating
+#: selection:event.theater,display_selected:0
+msgid "Single"
+msgstr ""
+
+#. module: event_seating
+#: code:addons/event_seating/models/event.py:236
+#: code:addons/event_seating/models/event.py:249
+#, python-format
+msgid "Some seats couldn't be found. Please check given labels."
+msgstr ""
+
+#. module: event_seating
+#: model:ir.ui.view,arch_db:event_seating.seat_selection
+msgid "Switch to"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.model,name:event_seating.model_event_theater
+#: model:ir.model.fields,field_description:event_seating.field_event_event_theater_id
+msgid "Theater"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.model,name:event_seating.model_event_theater_seat
+msgid "Theater seat"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.actions.act_window,name:event_seating.event_theater_action
+#: model:ir.ui.menu,name:event_seating.event_theater_menu
+#: model:ir.ui.view,arch_db:event_seating.view_event_theater_search
+msgid "Theaters"
+msgstr ""
+
+#. module: event_seating
+#: code:addons/event_seating/models/event.py:261
+#, python-format
+msgid "There is to much assigned seats than booked seats."
+msgstr ""
+
+#. module: event_seating
+#: code:addons/event_seating/models/event.py:37
+#, python-format
+msgid "There is too much registrations for this theater. Add seats or remove registrations."
+msgstr ""
+
+#. module: event_seating
+#: model:ir.ui.view,arch_db:event_seating.seat_selection
+msgid "Unassign all"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.ui.view,arch_db:event_seating.seat_selection
+msgid "Use color to display groups"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.ui.view,arch_db:event_seating.go_to_backend
+msgid "You can go back to backend by using following link."
+msgstr ""
+
+#. module: event_seating
+#: model:ir.ui.view,arch_db:event_seating.seat_selection
+msgid "You must select a theater in the event to use this function."
+msgstr ""
+
+#. module: event_seating
+#: code:addons/event_seating/models/event.py:35
+#, python-format
+msgid "You must set a theater before using this function."
+msgstr ""
+
+#. module: event_seating
+#: model:ir.ui.view,arch_db:event_seating.seat_selection
+msgid "[clear selection]"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.ui.view,arch_db:event_seating.seat_selection
+msgid "[remove all]"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.ui.view,arch_db:event_seating.seat_selection
+msgid "display mode <i class=\"fa fa-map\"/>"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.model,name:event_seating.model_event_registration_seat
+msgid "event.registration.seat"
+msgstr ""
+
+#. module: event_seating
+#: model:ir.ui.view,arch_db:event_seating.seat_selection
+msgid "seating mode <i class=\"fa fa-pencil\"/>"
+msgstr ""
+
