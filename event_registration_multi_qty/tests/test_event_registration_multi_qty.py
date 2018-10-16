@@ -11,12 +11,17 @@ class EventRegistrationMultiQty(common.SavepointCase):
     @classmethod
     def setUpClass(cls):
         super(EventRegistrationMultiQty, cls).setUpClass()
-        cls.env['ir.values'].set_default(
-            'event.config.settings', 'auto_confirmation', False)
+        cls.event_type = cls.env['event.type'].create({
+            'name': 'Test event type',
+            'use_timezone': True,
+            'use_mail_schedule': False,
+            'auto_confirm': False,
+        })
         cls.event = cls.env['event.event'].create({
             'name': 'Test event',
             'date_begin': '2017-05-26 20:00:00',
             'date_end': '2017-05-30 22:00:00',
+            'event_type_id': cls.event_type.id,
             'registration_multi_qty': True,
         })
         cls.attendee_draft = cls.env['event.registration'].create({
@@ -46,6 +51,7 @@ class EventRegistrationMultiQty(common.SavepointCase):
             'name': 'Test event2',
             'date_begin': '2017-05-26 20:00:00',
             'date_end': '2017-05-30 22:00:00',
+            'event_type_id': cls.event_type.id,
             'registration_multi_qty': False,
         })
         cls.attendee_no_qty_done = cls.env['event.registration'].create({
