@@ -165,7 +165,7 @@ class EventTheaterSeat(models.Model):
     _description = 'Theater seat'
     _rec_name = 'label'
 
-    theater_id = fields.Many2one('event.theater', string='Theater', required=True, ondelete='cascade')
+    theater_id = fields.Many2one('event.theater', string='Theaters', required=True, ondelete='cascade')
     column = fields.Integer(string='Column')
     row = fields.Integer(string='Row')
     character = fields.Char(string='Character', size=1)
