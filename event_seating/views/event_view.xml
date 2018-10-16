@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="view_event_event_form" model="ir.ui.view">
+        <field name="name">event.event.theater.form</field>
+        <field name="model">event.event</field>
+        <field name="inherit_id" ref="event.view_event_form"/>
+        <field name="arch" type="xml">
+            <field name="address_id" position="after">
+                <field name="theater_id"/>
+            </field>
+            <xpath expr="//button[@name='toggle_active']" position="before">
+                <button name="open_website_seating_url"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-ticket"
+                        attrs="{'invisible': [('theater_id', '=', False)]}">
+                    Seating
+                </button>
+            </xpath>
+            <xpath expr="//field[@name='state']" position="before">
+                <button name="automatically_compute_seats"
+                        type="object"
+                        string="Compute seating"
+                        attrs="{'invisible': [('theater_id', '=', False)]}"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

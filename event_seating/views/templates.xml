@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Layout without menu and footer -->
+    <template id="layout" inherit_id="website.layout" name="Event seating layout" primary="True">
+        <xpath expr="//div[@id='wrapwrap']/header" position="replace"/>
+        <xpath expr="//div[@id='wrapwrap']/footer" position="replace"/>
+        <xpath expr="//t[@t-call-assets='website.assets_editor'][@t-css='false']" position="after">
+            <link rel="stylesheet" href="/event_seating/static/lib/seat-charts/jquery.seat-charts.css"/>
+            <link rel="stylesheet" href="/event_seating/static/lib/datatables/datatables.css"/>
+            <link rel="stylesheet" href="/event_seating/static/src/css/seating.css"/>
+            <script src="/event_seating/static/lib/datatables/datatables.js"/>
+            <script src="/event_seating/static/lib/seat-charts/jquery.seat-charts.js"/>
+            <script src="/event_seating/static/src/js/seating.js"/>
+            <t t-raw='theater.get_css_seats_colors()'/>
+        </xpath>
+    </template>
+
+
+    <template id="go_to_backend" name="Event seating go to backend">
+        <div class="alert alert-info">
+            <div class="container">
+                <div class="text-center">
+                    You can go back to backend by using following link.
+                    <a t-attf-href="/web#return_label=Website&amp;model=#{model}&amp;id=#{res_id}&amp;view_type=form&amp;action=#{website.env.ref(action).id}"><i class="fa fa-arrow-right"/> Go to backend</a>.
+                    <t t-raw="0"/>
+                </div>
+            </div>
+        </div>
+    </template>
+
+
+    <template id="seat_map" name="Event seating map">
+        <div class="row">
+            <div class="col-xs-12">
+                <div id="seat-map">
+                    <div class="front-indicator">Front</div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+
+    <!-- Page preview -->
+    <template id="preview" name="Theater preview">
+        <t t-call="event_seating.layout">
+            <div id="wrap">
+                <t t-call="event_seating.go_to_backend">
+                    <t t-set="model" t-value="'event.theater'"/>
+                    <t t-set="res_id" t-value="theater.id"/>
+                    <t t-set="action" t-value="'event_seating.event_theater_action'"/>
+                </t>
+                <div class="oe_structure"/>
+                <div class="container mb32">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <h1 t-field="theater.name"/>
+                        </div>
+                    </div>
+                    <t t-call="event_seating.seat_map"/>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <h2>Legend</h2>
+                            <div id="legend"/>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    $(document).ready(function() {
+                        map = <t t-raw="theater.get_json_disposition()"/>;
+                        seats = <t t-raw="theater.get_json_seats()"/>;
+                        legend = <t t-raw="theater.get_json_legend_items()"/>;
+                        rows = <t t-raw="theater.get_rows()"/>;
+                        odoo.load_seating_chart();
+                    });
+                </script>
+                <div class="oe_structure"/>
+            </div>
+        </t>
+    </template>
+
+
+    <!-- Page seat selection -->
+    <template id="seat_selection" name="Seat selection">
+        <t t-set="theater" t-value="event.theater_id"/>
+        <t t-call="event_seating.layout">
+            <div id="wrap">
+                <t t-call="event_seating.go_to_backend">
+                    <t t-set="model" t-value="'event.event'"/>
+                    <t t-set="res_id" t-value="theater.id"/>
+                    <t t-set="action" t-value="'event.action_event_view'"/>
+                    <t t-if="edit">
+                        Switch to <a t-attf-href="/event_seating/#{slug(event)}">display mode <i class="fa fa-map"/></a>
+                    </t>
+                    <t t-else="">
+                        Switch to <a t-attf-href="/event_seating/#{slug(event)}?edit=1">seating mode <i class="fa fa-pencil"/></a>
+                    </t>
+                </t>
+                <div class="oe_structure"/>
+                <div class="container mb32">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <h1 t-if="edit">Seat selection for event "<t t-esc="event.name"/>"</h1>
+                            <h1 t-else="">Seating for event "<t t-esc="event.name"/>"</h1>
+                        </div>
+                    </div>
+                    <div class="row" t-if="not theater">
+                        <div class="col-xs-12">
+                            <p>You must select a theater in the event to use this function.</p>
+                        </div>
+                    </div>
+                    <t t-call="event_seating.seat_map"/>
+                    <div class="row" t-if="theater">
+                        <div class="col-xs-12 col-lg-5">
+                            <h2>Attendees</h2>
+                            <table class="table" id="attendees_list">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Date</th>
+                                        <th>Seated</th>
+                                        <th/>
+                                        <th t-if="edit"/>
+                                        <th t-if="edit"/>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="event.registration_ids" t-as="registration">
+                                        <tr class="attendee" t-att-data-id="registration.id">
+                                            <td t-esc="registration.name"/>
+                                            <td t-esc="registration.date_open" t-options="{'widget': 'datetime'}"/>
+                                            <td>
+                                                <span class="seats_count" t-esc="registration.seats_count"/> / <span class="seats_qty" t-esc="registration.qty"/>
+                                            </td>
+                                            <td class="display" title="Display on map">
+                                                <i class="fa fa-search fa-fw"/>
+                                            </td>
+                                            <td t-if="edit" class="unassign_all" title="Unassign all">
+                                                <i class="fa fa-trash fa-fw"/>
+                                            </td>
+                                            <td t-if="edit" class="select" title="Select">
+                                                <i class="fa fa-chevron-right fa-fw"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div t-if="edit" class="col-xs-12 col-lg-4">
+                            <h2>
+                                Seats (<span id="seats_counter">0</span>)
+                                <a href="#" class="btn-xs unselect_all_seats">[remove all]</a>
+                                <a href="#" class="btn-xs clear_highlighted_seats">[clear selection]</a>
+                            </h2>
+                            <div id="form">
+                                <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary" type="button" id="validate_assign">Assign!</button>
+                                    </span>
+                                    <select id="assign" class="form-control">
+                                        <option/>
+                                        <t t-foreach="event.registration_ids" t-as="registration">
+                                            <option t-att-value="registration.id" t-esc="registration.name"/>
+                                        </t>
+                                    </select>
+                                </div>
+                            </div>
+                            <div id="selected_seats" class="mb16" t-att-style="'display: none;' if theater.display_selected not in ('single', 'both') else None"/>
+                            <div id="selected_grouped_seats" class="mb16" t-att-style="'display: none;' if theater.display_selected not in ('group', 'both') else None"/>
+                        </div>
+                        <div t-else="" class="col-xs-12 col-lg-4">
+                            <h2>
+                                Seats
+                            </h2>
+                            <div id="searched_seats" class="mb16"/>
+                        </div>
+                        <div class="col-xs-12 col-lg-3">
+                            <h2>Informations</h2>
+                            <div id="seat_informations">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-tag fa-fw"/>
+                                    </span>
+                                    <p class="form-control form-control-static seat_number"/>
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-user fa-fw"/>
+                                    </span>
+                                    <p class="form-control form-control-static seat_attendee"/>
+                                </div>
+                            </div>
+                            <label for="reservations_colors">
+                                <input type="checkbox" id="reservations_colors"/>
+                                Use color to display groups
+                            </label>
+                            <h2>Legend</h2>
+                            <div id="legend"/>
+                        </div>
+                    </div>
+                    <script t-if="theater">
+                        $(document).ready(function() {
+                            registrations = <t t-raw="event.get_registrations_json()"/>;
+                            map = <t t-raw="theater.get_json_disposition()"/>;
+                            seats = <t t-raw="theater.get_json_seats()"/>;
+                            legend = <t t-raw="theater.get_json_legend_items()"/>;
+                            rows = <t t-raw="theater.get_rows()"/>;
+                            odoo.load_seating_chart(true, true, true);
+                            $('#attendees_list').DataTable({
+                                "paging": false,
+                                "info": false,
+                                "columnDefs": [{
+                                "targets": <t t-if="edit">[3, 5]</t><t t-else="">[3]</t>,
+                                    "orderable": false
+                                }]
+                            });
+                        });
+                    </script>
+                </div>
+                <div class="oe_structure"/>
+            </div>
+        </t>
+    </template>
+
+</odoo>
