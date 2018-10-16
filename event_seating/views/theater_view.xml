@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="view_event_theater_tree" model="ir.ui.view">
+        <field name="name">event.theater.tree</field>
+        <field name="model">event.theater</field>
+        <field name="arch" type="xml">
+            <tree name="Theaters">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_event_theater_form" model="ir.ui.view">
+        <field name="name">event.theater.form</field>
+        <field name="model">event.theater</field>
+        <field name="arch" type="xml">
+            <form name="Theater">
+                <div class="oe_button_box" name="button_box">
+                    <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-check">
+                        <field name="active" widget="boolean_button" options='{"terminology": "active"}'/>
+                    </button>
+                    <button name="open_website_url"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-globe">
+                        Preview
+                    </button>
+                </div>
+                <group>
+                    <field name="name"/>
+                    <field name="rows"/>
+                    <field name="display_selected"/>
+                </group>
+                <notebook>
+                    <page string="Disposition" name="disposition">
+                        <group>
+                            <field name="disposition"/>
+                            <field name="seats_names"/>
+                            <field name="colors"/>
+                        </group>
+                    </page>
+                    <page string="Seats" name="seats">
+                        <field name="seat_ids" readonly="1">
+                            <tree>
+                                <field name="label"/>
+                                <field name="category"/>
+                                <field name="reduced_mobility"/>
+                                <field name="column"/>
+                                <field name="row"/>
+                                <field name="character"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_event_theater_search" model="ir.ui.view">
+        <field name="name">event.theater.search</field>
+        <field name="model">event.theater</field>
+        <field name="arch" type="xml">
+            <search string="Theaters">
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="event_theater_action" model="ir.actions.act_window">
+        <field name="name">Theaters</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">event.theater</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="event_theater_menu"
+              action="event_theater_action"
+              parent="event.menu_event_configuration"
+              sequence="20"
+              groups="event.group_event_manager"/>
+
+</odoo>
