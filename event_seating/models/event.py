@@ -40,7 +40,7 @@ class EventEvent(models.Model):
             for registration in registrations:
                 registration.seat_ids.unlink()
         informations = self._auto_compute_prepare_informations(registrations)
-        for registration in informations['partial_registrations'] + informations['undone_registrations']:
+        for registration in informations['large_registrations'] + informations['small_registrations']:
             seats, informations = self._auto_compute_find_seats(informations, registration)
             informations = self._auto_compute_assign_seats(informations, registration, seats)
         return True
@@ -53,25 +53,36 @@ class EventEvent(models.Model):
             'done_registrations': [],
             'partial_registrations': [],
             'undone_registrations': [],
+            'small_registrations': [],
+            'large_registrations': [],
             'all_registrations': [],
         }
         for registration in registrations:
-            informations['all_registrations'].append(registration)
-            if not registration.seat_ids:
-                informations['undone_registrations'].append(registration)
-            elif len(registration.seat_ids) < registration.qty:
-                informations['partial_registrations'].append(registration)
-            else:
-                informations['done_registrations'].append(registration)
-            for seat in registration.seat_ids:
-                informations['booked_seats'][seat.label] = seat.seat_id
+            informations = self._auto_compute_prepare_registration_info(informations, registration)
         for seat in self.theater_id.seat_ids:
             informations['all_seats'][seat.label] = seat
             if seat.label not in informations['booked_seats']:
                 informations['available_seats'][seat.label] = seat
         return informations
 
-    def _auto_compute_find_seats(self, informations, registration):
+    def _auto_compute_prepare_registration_info(self, informations, registration):
+        informations['all_registrations'].append(registration)
+        remaining = registration.qty - len(registration.seat_ids)
+        if remaining > 2:
+            informations['large_registrations'].append(registration)
+        elif remaining > 0:
+            informations['small_registrations'].append(registration)
+        if not registration.seat_ids:
+            informations['undone_registrations'].append(registration)
+        elif len(registration.seat_ids) < registration.qty:
+            informations['partial_registrations'].append(registration)
+        else:
+            informations['done_registrations'].append(registration)
+        for seat in registration.seat_ids:
+            informations['booked_seats'][seat.label] = seat.seat_id
+        return informations
+
+    def _auto_compute_find_seats(self, informations, registration, by_pass=False):
         qty = registration.qty - registration.seats_count
         groups = OrderedDict()
         max_in_subgroup = 0
@@ -95,9 +106,11 @@ class EventEvent(models.Model):
         max_in_subgroup, subgroup, group_key = subgroup_save(group_key, subgroup)
         # Computed to avoid orphan seats
         min_qty_in_reservations = 9999
-        for reg in informations['partial_registrations'] + informations['undone_registrations']:
+        for reg in informations['large_registrations'] + informations['small_registrations']:
             if registration.id != reg.id:
                 min_qty_in_reservations = min(min_qty_in_reservations, reg.qty - reg.seats_count)
+        if by_pass:
+            min_qty_in_reservations = 0
         # Check if needed seat can be filled with an other registration
         matching_seats = []
         if qty == max_in_subgroup:
@@ -181,27 +194,20 @@ class EventEvent(models.Model):
                             matching_seats += seats[:rem_qty]
                 if len(matching_seats) == qty:
                     return matching_seats, informations
+        if not by_pass:
+            return self._auto_compute_find_seats(informations, registration, by_pass=True)
         # Too much qty to find consecutive seats => split group
         raise ValidationError(_("Impossible to find seats for registration %s (%s). Try to set seats manually before running the seating algorithm.") % (registration.name, registration.qty))
 
 
     def _auto_compute_assign_seats(self, informations, registration, seats):
-        seats_label = []
+        registration.assign_seats(seats.mapped('label'))
         for seat in seats:
-            seats_label.append(seat.label)
             del informations['available_seats'][seat.label]
-            informations['booked_seats'][seat.label] = seat
-        registration.assign_seats(seats_label)
-        if registration in informations['undone_registrations']:
-            informations['undone_registrations'].remove(registration)
-        if registration in informations['partial_registrations']:
-            informations['partial_registrations'].remove(registration)
-        if not registration.seat_ids:
-            informations['undone_registrations'].append(registration)
-        elif len(registration.seat_ids) < registration.qty:
-            informations['partial_registrations'].append(registration)
-        elif registration not in informations['done_registrations']:
-            informations['done_registrations'].append(registration)
+        for where in ['undone_registrations', 'partial_registrations', 'small_registrations', 'large_registrations']:
+            if registration in informations[where]:
+                informations[where].remove(registration)
+        informations = self._auto_compute_prepare_registration_info(informations, registration)
         return informations
 
 
