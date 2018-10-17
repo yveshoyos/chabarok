@@ -201,7 +201,7 @@ class EventEvent(models.Model):
 
 
     def _auto_compute_assign_seats(self, informations, registration, seats):
-        registration.assign_seats(seats.mapped('label'))
+        registration.assign_seats([seat.label for seat in seats])
         for seat in seats:
             del informations['available_seats'][seat.label]
         for where in ['undone_registrations', 'partial_registrations', 'small_registrations', 'large_registrations']:
