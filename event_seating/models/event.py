@@ -270,9 +270,9 @@ class EventRegistration(models.Model):
 class EventRegistrationSeat(models.Model):
     _name = 'event.registration.seat'
 
-    registration_id = fields.Many2one('event.registration', string="Registration", required=True)
+    registration_id = fields.Many2one('event.registration', string="Registration", required=True, ondelete="cascade")
     event_id = fields.Many2one('event.event', string="Event", related='registration_id.event_id', readonly=True, store=True)
-    seat_id = fields.Many2one('event.theater.seat', string='Seat', required=True)
+    seat_id = fields.Many2one('event.theater.seat', string='Seat', required=True, ondelete="no action")
     label = fields.Char(string='Label', related='seat_id.label', readonly=True, store=True)
 
     @api.one
