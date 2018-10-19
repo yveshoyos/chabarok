@@ -219,7 +219,7 @@ class EventRegistration(models.Model):
     seat_ids = fields.One2many('event.registration.seat', 'registration_id', string='Seats')
     seats_count = fields.Integer(string='Number of seats', compute='_get_seats_count')
     seats_txt = fields.Text(string='Seats (text)', compute='_get_seats_txt', store=True)
-    seats_html = field.Text(string='Seats (html)', compute='_get_seats_txt', store=True)
+    seats_html = fields.Text(string='Seats (html)', compute='_get_seats_txt', store=True)
 
     @api.one
     @api.depends('seat_ids', 'seat_ids.registration_id')
