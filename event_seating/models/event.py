@@ -237,7 +237,7 @@ class EventRegistration(models.Model):
             groups[seat.category].setdefault(row, [[]])
             last_group = groups[seat.category][row][-1]
             last_seat = last_group[-1] if last_group else False
-            if not last_seat or last_seat.column + 1 == last_seat.column
+            if not last_seat or (last_seat.column + 1) == seat.column:
                 last_group.append(seat)
             else:
                 groups[seat.category][row].append([seat])
