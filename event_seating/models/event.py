@@ -243,7 +243,7 @@ class EventRegistration(models.Model):
                 groups[seat.category][row].append([seat])
         for category, rows in groups.items():
             for row, groups in rows.items():
-                res += 'Section %s, row %: ' % (category, row)
+                res += 'Section %s, row %s: ' % (category, row)
                 groups_txt = []
                 for group in groups:
                     if len(group) > 1:
