@@ -218,7 +218,8 @@ class EventRegistration(models.Model):
 
     seat_ids = fields.One2many('event.registration.seat', 'registration_id', string='Seats')
     seats_count = fields.Integer(string='Number of seats', compute='_get_seats_count')
-    seats_txt = fields.Text(string='Seats', compute='_get_seats_txt', store=True)
+    seats_txt = fields.Text(string='Seats (text)', compute='_get_seats_txt', store=True)
+    seats_html = field.Text(string='Seats (html)', compute='_get_seats_txt', store=True)
 
     @api.one
     @api.depends('seat_ids', 'seat_ids.registration_id')
@@ -230,7 +231,7 @@ class EventRegistration(models.Model):
     def _get_seats_txt(self):
         res = ''
         groups = OrderedDict()
-        for seat_reservation in self.seat_ids:
+        for seat_reservation in self.seat_ids.sorted(key=lambda r: r.seat_id.label):
             seat = seat_reservation.seat_id
             row, num = seat.label.split('-')
             groups.setdefault(seat.category, OrderedDict())
@@ -252,6 +253,7 @@ class EventRegistration(models.Model):
                         groups_txt.append(group[0].label)
                 res += ' ; '.join(groups_txt) + '\n'
         self.seats_txt = res
+        self.seats_html = res.replace('\n', '<br/>').replace('->', '<i class="fa fa-long-arrow-right"/>')
 
     @api.multi
     def get_registration_data(self):
