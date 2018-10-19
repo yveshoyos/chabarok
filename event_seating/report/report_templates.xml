@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="event_event_registration_list_report">
+        <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="event">
+                <div class="page">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Quantity</th>
+                                <th>Seats</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="event.registration_ids" t-as="registration">
+                                <td t-esc="registration.name"/>
+                                <td t-esc="registration.qty"/>
+                                <td t-esc="registration.seats_txt"/>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+</odoo>
