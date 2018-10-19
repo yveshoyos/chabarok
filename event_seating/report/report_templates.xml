@@ -17,7 +17,7 @@
                             <tr t-foreach="event.registration_ids" t-as="registration">
                                 <td t-esc="registration.name"/>
                                 <td t-esc="registration.qty"/>
-                                <td t-esc="registration.seats_txt"/>
+                                <td t-raw="registration.seats_html"/>
                             </tr>
                         </tbody>
                     </table>
