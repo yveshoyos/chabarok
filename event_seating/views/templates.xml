@@ -95,7 +95,7 @@
                     <t t-else="">
                         Switch to <a t-attf-href="/event_seating/#{slug(event)}?edit=1">seating mode <i class="fa fa-pencil"/></a>
                     </t>
-                    Switch to <a t-attf-href="/event_seating#{slug(event)}?tablet=1">tablet version <i class="fa fa-tablet"/></a>
+                    Switch to <a t-attf-href="/event_seating/#{slug(event)}?tablet=1">tablet version <i class="fa fa-tablet"/></a>
                 </t>
                 <div class="oe_structure"/>
                 <div class="container mb32">
