@@ -38,6 +38,7 @@
         <field name="inherit_id" ref="event_registration_multi_qty.view_event_registration_tree"/>
         <field name="arch" type="xml">
             <field name="qty" position="after">
+                <field name="sequence" widget="handle"/>
                 <field name="seats_txt"/>
             </field>
         </field>
