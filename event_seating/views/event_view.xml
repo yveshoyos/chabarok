@@ -23,7 +23,23 @@
                         type="object"
                         string="Compute seating"
                         attrs="{'invisible': [('theater_id', '=', False)]}"/>
+                <button name="reset_all_seats"
+                        type="object"
+                        string="Reset seating"
+                        attrs="{'invisible': [('theater_id', '=', False)]}"/>
             </xpath>
+        </field>
+    </record>
+
+
+    <record id="view_event_registration_seats_tree" model="ir.ui.view">
+        <field name="name">event.registration.seats.tree</field>
+        <field name="model">event.registration</field>
+        <field name="inherit_id" ref="event_registration_multi_qty.view_event_registration_tree"/>
+        <field name="arch" type="xml">
+            <field name="qty" position="after">
+                <field name="seats_txt"/>
+            </field>
         </field>
     </record>
 

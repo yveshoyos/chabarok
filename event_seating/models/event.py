@@ -30,15 +30,17 @@ class EventEvent(models.Model):
         return json.dumps(res)
 
     @api.one
-    def automatically_compute_seats(self, reset=True):
+    def reset_all_seats(self):
+        for registration in self.registration_ids:
+            registration.seat_ids.unlink()
+
+    @api.one
+    def automatically_compute_seats(self):
         if not self.theater_id:
             raise ValidationError(_("You must set a theater before using this function."))
         if len(self.theater_id.seat_ids) < self.seats_expected:
             raise ValidationError(_("There is too much registrations for this theater. Add seats or remove registrations."))
         registrations = self.env['event.registration'].search([('event_id', '=', self.id)], order='date_open')
-        if reset:
-            for registration in registrations:
-                registration.seat_ids.unlink()
         informations = self._auto_compute_prepare_informations(registrations)
         for registration in informations['large_registrations'] + informations['small_registrations']:
             seats, informations = self._auto_compute_find_seats(informations, registration)
@@ -216,11 +218,42 @@ class EventRegistration(models.Model):
 
     seat_ids = fields.One2many('event.registration.seat', 'registration_id', string='Seats')
     seats_count = fields.Integer(string='Number of seats', compute='_get_seats_count')
+    seats_txt = fields.Text(string='Seats (text)', compute='_get_seats_txt', store=True)
+    seats_html = fields.Text(string='Seats (html)', compute='_get_seats_txt', store=True)
 
     @api.one
     @api.depends('seat_ids', 'seat_ids.registration_id')
     def _get_seats_count(self):
         self.seats_count = len(self.seat_ids)
+        
+    @api.one
+    @api.depends('seat_ids', 'seat_ids.registration_id', 'seat_ids.seat_id.label')
+    def _get_seats_txt(self):
+        res = ''
+        groups = OrderedDict()
+        for seat_reservation in self.seat_ids.sorted(key=lambda r: r.seat_id.label):
+            seat = seat_reservation.seat_id
+            row, num = seat.label.split('-')
+            groups.setdefault(seat.category, OrderedDict())
+            groups[seat.category].setdefault(row, [[]])
+            last_group = groups[seat.category][row][-1]
+            last_seat = last_group[-1] if last_group else False
+            if not last_seat or (last_seat.column + 1) == seat.column:
+                last_group.append(seat)
+            else:
+                groups[seat.category][row].append([seat])
+        for category, rows in groups.items():
+            for row, groups in rows.items():
+                res += 'Section %s, row %s: ' % (category, row)
+                groups_txt = []
+                for group in groups:
+                    if len(group) > 1:
+                        groups_txt.append('%s -> %s' % (group[0].label, group[-1].label))
+                    elif len(group) == 1:
+                        groups_txt.append(group[0].label)
+                res += ' ; '.join(groups_txt) + '\n'
+        self.seats_txt = res
+        self.seats_html = res.replace('\n', '<br/>').replace('->', '<i class="fa fa-long-arrow-right"/>')
 
     @api.multi
     def get_registration_data(self):

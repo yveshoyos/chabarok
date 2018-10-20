@@ -15,7 +15,10 @@
         'views/event_view.xml',
         'views/theater_view.xml',
         'views/templates.xml',
+        'report/report_templates.xml',
+        'report/reports.xml',
         'security/ir.model.access.csv',
     ],
     'installable': True,
 }
+

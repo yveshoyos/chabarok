@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+     <report
+        id="report_event_seating_registration_list"
+        model="event.event"
+        string="Event registrations"
+        report_type="qweb-pdf"
+        name="event_seating.event_event_registration_list_report"
+        file="event_seating.event_event_registration_list_report"
+        paperformat="base.paperformat_euro"
+        print_report_name="'Registration Event - %s' % (object.name).replace('/','')"/>
+
+</odoo>
