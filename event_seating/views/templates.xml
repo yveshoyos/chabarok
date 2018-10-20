@@ -6,9 +6,7 @@
         <xpath expr="//div[@id='wrapwrap']/footer" position="replace"/>
         <xpath expr="//t[@t-call-assets='website.assets_editor'][@t-css='false']" position="after">
             <link rel="stylesheet" href="/event_seating/static/lib/seat-charts/jquery.seat-charts.css"/>
-            <link rel="stylesheet" href="/event_seating/static/lib/datatables/datatables.css"/>
             <link rel="stylesheet" href="/event_seating/static/src/css/seating.css"/>
-            <script src="/event_seating/static/lib/datatables/datatables.js"/>
             <script src="/event_seating/static/lib/seat-charts/jquery.seat-charts.js"/>
             <script src="/event_seating/static/src/js/seating.js"/>
             <t t-raw='theater.get_css_seats_colors()'/>
@@ -205,14 +203,6 @@
                             legend = <t t-raw="theater.get_json_legend_items()"/>;
                             rows = <t t-raw="theater.get_rows()"/>;
                             odoo.load_seating_chart(true, true, true);
-                            $('#attendees_list').DataTable({
-                                "paging": false,
-                                "info": false,
-                                "columnDefs": [{
-                                "targets": <t t-if="edit">[3, 5]</t><t t-else="">[3]</t>,
-                                    "orderable": false
-                                }]
-                            });
                         });
                     </script>
                 </div>
