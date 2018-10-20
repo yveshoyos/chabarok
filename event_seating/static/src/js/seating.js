@@ -162,6 +162,7 @@ odoo.define('event_seating.seating', function (require) {
             naming: {
                 top: false,
                 left: true,
+                right: true,
                 rows: rows,
                 getId: function(character, row, column) {
                     return row + '-' + seat_num;

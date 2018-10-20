@@ -40,7 +40,7 @@ class EventEvent(models.Model):
             raise ValidationError(_("You must set a theater before using this function."))
         if len(self.theater_id.seat_ids) < self.seats_expected:
             raise ValidationError(_("There is too much registrations for this theater. Add seats or remove registrations."))
-        registrations = self.env['event.registration'].search([('event_id', '=', self.id)], order='date_open')
+        registrations = self.env['event.registration'].search([('event_id', '=', self.id)], order='sequence, date_open')
         informations = self._auto_compute_prepare_informations(registrations)
         for registration in informations['large_registrations'] + informations['small_registrations']:
             seats, informations = self._auto_compute_find_seats(informations, registration)
@@ -220,6 +220,7 @@ class EventRegistration(models.Model):
     seats_count = fields.Integer(string='Number of seats', compute='_get_seats_count')
     seats_txt = fields.Text(string='Seats (text)', compute='_get_seats_txt', store=True)
     seats_html = fields.Text(string='Seats (html)', compute='_get_seats_txt', store=True)
+    sequence = fields.Integer(string='Sequence', default=100)
 
     @api.one
     @api.depends('seat_ids', 'seat_ids.registration_id')

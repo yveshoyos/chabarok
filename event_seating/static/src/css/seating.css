@@ -30,10 +30,18 @@ div.seatCharts-row {
 div.seatCharts-cell {
 	flex-grow: 1;
 	flex-shrink: 1;
+	margin: 1px;
+}
+div.seatCharts-namingLeft, div.seatCharts-namingRight {
+    width: 14px;
 }
 div.seatCharts-seat {
     font-size: 0.6em;
     transition-duration: 2s;
+}
+.preview div.seatCharts-seat {
+    background: none;
+    color: #000000;
 }
 div.seatCharts-seat.highlight {
     transform: scale(1.5, 1.5);
