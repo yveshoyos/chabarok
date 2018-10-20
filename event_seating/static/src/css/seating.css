@@ -148,7 +148,7 @@ div.seatCharts-seat.grp23 {
 }
 div.seatCharts-seat.highlight {
     transform: scale(1.5, 1.5);
-    background: rgba(234, 221, 6, 0.9) !important;
+    background-color: rgba(234, 221, 6, 0.9) !important;
     color: #000000;
 }
 .scrollTop {

@@ -4,6 +4,7 @@
     <template id="layout" inherit_id="website.layout" name="Event seating layout" primary="True">
         <xpath expr="//div[@id='wrapwrap']/header" position="replace"/>
         <xpath expr="//div[@id='wrapwrap']/footer" position="replace"/>
+        <xpath expr="//nav[@id='oe_main_menu_navbar']" position="replace"/>
         <xpath expr="//t[@t-call-assets='website.assets_editor'][@t-css='false']" position="after">
             <link rel="stylesheet" href="/event_seating/static/lib/seat-charts/jquery.seat-charts.css"/>
             <link rel="stylesheet" href="/event_seating/static/lib/datatables/datatables.css"/>
@@ -13,6 +14,11 @@
             <script t-if="use_seating_map" src="/event_seating/static/src/js/seating_map.js"/>
             <script t-else="" src="/event_seating/static/src/js/seating.js"/>
             <t t-raw='theater.get_css_seats_colors()'/>
+            <style>
+                body.o_connected_user {
+                    padding-top: 0 !important;
+                }
+            </style>
         </xpath>
     </template>
 
