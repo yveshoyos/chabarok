@@ -26,6 +26,7 @@
 				naming  : {
 					top    : true,
 					left   : true,
+					right   : true,
 					getId  : function(character, row, column) {
 						return row + '_' + column;
 					},
@@ -338,10 +339,8 @@
 				.addClass('seatCharts-row seatCharts-header');
 			
 			if (settings.naming.left) {
-				$headerRow.append($('<div></div>').addClass('seatCharts-cell'));
+				$headerRow.append($('<div></div>').addClass('seatCharts-cell seatCharts-namingLeft'));
 			}
-			
-				
 			$.each(settings.naming.columns, function(index, value) {
 				$headerRow.append(
 					$('<div></div>')
@@ -349,6 +348,9 @@
 						.text(value)
 				);
 			});
+			if (settings.naming.right) {
+				$headerRow.append($('<div></div>').addClass('seatCharts-cell seatCharts-namingRight'));
+			}
 		}
 		
 		fn.append($headerRow);
@@ -361,7 +363,7 @@
 			if (settings.naming.left) {
 				$row.append(
 					$('<div></div>')
-						.addClass('seatCharts-cell seatCharts-space')
+						.addClass('seatCharts-cell seatCharts-space seatCharts-namingLeft')
 						.text(settings.naming.rows[row])
 				);
 			}
@@ -420,6 +422,14 @@
 					$('<div></div>').addClass('seatCharts-cell seatCharts-space')	
 				);
 			});
+
+			if (settings.naming.right) {
+				$row.append(
+					$('<div></div>')
+						.addClass('seatCharts-cell seatCharts-space seatCharts-namingRight')
+						.text(settings.naming.rows[row])
+				);
+			}
 			
 			fn.append($row);
 		});
