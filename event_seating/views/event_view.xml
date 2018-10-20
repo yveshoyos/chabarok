@@ -39,6 +39,7 @@
         <field name="arch" type="xml">
             <field name="qty" position="after">
                 <field name="sequence" widget="handle"/>
+                <field name="sequence_txt"/>
                 <field name="seats_txt"/>
             </field>
         </field>

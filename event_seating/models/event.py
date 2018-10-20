@@ -218,9 +218,10 @@ class EventRegistration(models.Model):
 
     seat_ids = fields.One2many('event.registration.seat', 'registration_id', string='Seats')
     seats_count = fields.Integer(string='Number of seats', compute='_get_seats_count')
-    seats_txt = fields.Text(string='Seats (text)', compute='_get_seats_txt', store=True)
-    seats_html = fields.Text(string='Seats (html)', compute='_get_seats_txt', store=True)
+    seats_txt = fields.Text(string='Seats (text)', compute='_get_seats_txt_html', store=True)
+    seats_html = fields.Text(string='Seats (html)', compute='_get_seats_txt_html', store=True)
     sequence = fields.Integer(string='Sequence', default=100)
+    sequence_txt = fields.Integer(string='#', related='sequence', readonly=True)
 
     @api.one
     @api.depends('seat_ids', 'seat_ids.registration_id')
@@ -229,10 +230,9 @@ class EventRegistration(models.Model):
         
     @api.one
     @api.depends('seat_ids', 'seat_ids.registration_id', 'seat_ids.seat_id.label')
-    def _get_seats_txt(self):
-        res = ''
+    def _get_seats_txt_html(self):
         groups = OrderedDict()
-        for seat_reservation in self.seat_ids.sorted(key=lambda r: r.seat_id.label):
+        for seat_reservation in self.seat_ids.sorted(key=lambda r: r.seat_id.row * 1000 + r.seat_id.column ):
             seat = seat_reservation.seat_id
             row, num = seat.label.split('-')
             groups.setdefault(seat.category, OrderedDict())
@@ -243,18 +243,29 @@ class EventRegistration(models.Model):
                 last_group.append(seat)
             else:
                 groups[seat.category][row].append([seat])
+        txt = ''
+        html = ''
         for category, rows in groups.items():
             for row, groups in rows.items():
-                res += 'Section %s, row %s: ' % (category, row)
+                txt += _('Section %s, row %s: ') % (category, row)
+                html += '<p>' + _('Section %s, row %s: ') % (category, row)
                 groups_txt = []
+                groups_html = []
                 for group in groups:
                     if len(group) > 1:
                         groups_txt.append('%s -> %s' % (group[0].label, group[-1].label))
+                        groups_html.append('<li>%s <i class="fa fa-long-arrow-right"/> %s</li>' % (group[0].label, group[-1].label))
                     elif len(group) == 1:
                         groups_txt.append(group[0].label)
-                res += ' ; '.join(groups_txt) + '\n'
-        self.seats_txt = res
-        self.seats_html = res.replace('\n', '<br/>').replace('->', '<i class="fa fa-long-arrow-right"/>')
+                        groups_html.append('<li>' + group[0].label + '</li>')
+                txt += ' ; '.join(groups_txt) + '\n'
+                if len(groups_html) > 1:
+                    html += '<ul class="list-unstyled">' + '\n'.join(groups_html) + '</ul>'
+                elif groups_html:
+                    html += '<ul class="list-inline">' + ''.join(groups_html) + '</ul>'
+                html += '</p>'
+        self.seats_txt = txt
+        self.seats_html = html
 
     @api.multi
     def get_registration_data(self):
