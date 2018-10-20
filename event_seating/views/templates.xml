@@ -271,7 +271,7 @@
                                                 <span t-esc="registration.qty"/>
                                             </td>
                                             <td>
-                                                <t t-raw="registration.seats_html"/>
+                                                <pre class="mb0" t-esc="registration.seats_txt"/>
                                             </td>
                                             <td class="display" title="Display on map">
                                                 <i class="fa fa-search fa-fw"/>
@@ -286,23 +286,28 @@
                 <t t-call="event_seating.seat_map"/>
                 <script t-if="theater">
                     $(document).ready(function() {
-                    registrations = <t t-raw="event.get_registrations_json()"/>;
-                    map = <t t-raw="theater.get_json_disposition()"/>;
-                    seats = <t t-raw="theater.get_json_seats()"/>;
-                    legend = <t t-raw="theater.get_json_legend_items()"/>;
-                    rows = <t t-raw="theater.get_rows()"/>;
-                    odoo.load_seating_chart();
-                    $('#attendees_list').DataTable({
-                    "paging": false,
-                    "info": false,
-                    "columnDefs": [{
-                    "targets": [3],
-                    "orderable": false
-                    }]
-                    });
+                        registrations = <t t-raw="event.get_registrations_json()"/>;
+                        map = <t t-raw="theater.get_json_disposition()"/>;
+                        seats = <t t-raw="theater.get_json_seats()"/>;
+                        legend = <t t-raw="theater.get_json_legend_items()"/>;
+                        rows = <t t-raw="theater.get_rows()"/>;
+                        odoo.load_seating_chart();
+                        $('#attendees_list').DataTable({
+                            "paging": false,
+                            "info": false,
+                            "columnDefs": [{
+                                "targets": [3],
+                                "orderable": false
+                            }]
+                        });
                     });
                 </script>
                 <div class="oe_structure"/>
+            </div>
+            <div id="stop" class="scrollTop">
+                <span>
+                    <a href=""><i class="fa fa-chevron-circle-up fa-4" aria-hidden="true"/></a>
+                </span>
             </div>
         </t>
     </template>

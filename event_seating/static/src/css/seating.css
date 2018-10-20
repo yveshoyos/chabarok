@@ -43,11 +43,6 @@ div.seatCharts-seat {
     background: none;
     color: #000000;
 }
-div.seatCharts-seat.highlight {
-    transform: scale(1.5, 1.5);
-    background: rgba(234, 221, 6, 0.9);
-    color: #000000;
-}
 li#cart-item-template {
     display: none;
 }
@@ -150,4 +145,16 @@ div.seatCharts-seat.grp22 {
 div.seatCharts-seat.grp23 {
     background-color: rgb(111, 71, 0);
     color: #ffffff;
+}
+div.seatCharts-seat.highlight {
+    transform: scale(1.5, 1.5);
+    background: rgba(234, 221, 6, 0.9) !important;
+    color: #000000;
+}
+.scrollTop {
+    position: fixed;
+    right: 10%;
+    bottom: 5px;
+    opacity: 0;
+    transition: all 0.4s ease-in-out 0s;
 }

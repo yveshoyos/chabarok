@@ -60,6 +60,9 @@ odoo.define('event_seating.seating', function (require) {
             for (var i in registrations[registration_id].seats) {
                 $('#'+registrations[registration_id].seats[i]).addClass('highlight');
             }
+            $('html, body').animate({
+                scrollTop: $("#seat-map").offset().top
+            }, 1000);
         });
         $('#reservations_colors').change(function () {
             if ($(this).is(':checked')) {
@@ -68,6 +71,23 @@ odoo.define('event_seating.seating', function (require) {
             else {
                 remove_grp_classes();
             }
+        });
+
+        var scrollTop = $(".scrollTop");
+        $(window).scroll(function() {
+            var topPos = $(this).scrollTop();
+            if (topPos > 100) {
+                $(scrollTop).css("opacity", "0.75");
+            }
+            else {
+                $(scrollTop).css("opacity", "0");
+            }
+        });
+        $(scrollTop).click(function() {
+            $('html, body').animate({
+                scrollTop: 0
+            }, 800);
+            return false;
         });
     }
 });
