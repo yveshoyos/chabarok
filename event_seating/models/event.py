@@ -248,7 +248,7 @@ class EventRegistration(models.Model):
         for category, rows in groups.items():
             for row, groups in rows.items():
                 txt += _('Section %s, row %s: ') % (category, row)
-                html += '<p>' + _('Section %s, row %s: ') % (category, row)
+                html += '<div>' + _('Section %s, row %s: ') % (category, row)
                 groups_txt = []
                 groups_html = []
                 for group in groups:
@@ -257,13 +257,13 @@ class EventRegistration(models.Model):
                         groups_html.append('<li>%s <i class="fa fa-long-arrow-right"/> %s</li>' % (group[0].label, group[-1].label))
                     elif len(group) == 1:
                         groups_txt.append(group[0].label)
-                        groups_html.append('<li>' + group[0].label + '</li>')
+                        groups_html.append('<li>%s</li>' % group[0].label)
                 txt += ' ; '.join(groups_txt) + '\n'
                 if len(groups_html) > 1:
-                    html += '<ul class="list-unstyled">' + '\n'.join(groups_html) + '</ul>'
+                    html += '<ul class="list-unstyled">%s</ul>' % '\n'.join(groups_html)
                 elif groups_html:
-                    html += '<ul class="list-inline">' + ''.join(groups_html) + '</ul>'
-                html += '</p>'
+                    html += '<ul class="list-inline">%s</ul>' % ''.join(groups_html)
+                html += '</div>'
         self.seats_txt = txt
         self.seats_html = html
 

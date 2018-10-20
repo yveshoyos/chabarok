@@ -21,7 +21,6 @@
         <div class="alert alert-info">
             <div class="container">
                 <div class="text-center">
-                    You can
                     <a t-attf-href="/web#return_label=Website&amp;model=#{model}&amp;id=#{res_id}&amp;view_type=form&amp;action=#{website.env.ref(action).id}"><i class="fa fa-arrow-right"/> go to backend</a>.
                     <t t-raw="0"/>
                 </div>
@@ -272,7 +271,7 @@
                                                 <span t-esc="registration.qty"/>
                                             </td>
                                             <td>
-                                                <span t-raw="registration.seats_html"/>
+                                                <t t-raw="registration.seats_html"/>
                                             </td>
                                             <td class="display" title="Display on map">
                                                 <i class="fa fa-search fa-fw"/>
