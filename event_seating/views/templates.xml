@@ -246,7 +246,6 @@
                                 Use color to display groups
                             </label>
                         </div>
-
                     </div>
                     <div class="row" t-if="not theater">
                         <div class="col-xs-12">
@@ -283,27 +282,27 @@
                                 </tbody>
                             </table>
                         </div>
-                        <t t-call="event_seating.seat_map"/>
                     </div>
-                    <script t-if="theater">
-                        $(document).ready(function() {
-                            registrations = <t t-raw="event.get_registrations_json()"/>;
-                            map = <t t-raw="theater.get_json_disposition()"/>;
-                            seats = <t t-raw="theater.get_json_seats()"/>;
-                            legend = <t t-raw="theater.get_json_legend_items()"/>;
-                            rows = <t t-raw="theater.get_rows()"/>;
-                            odoo.load_seating_chart();
-                            $('#attendees_list').DataTable({
-                                "paging": false,
-                                "info": false,
-                                "columnDefs": [{
-                                "targets": [3],
-                                    "orderable": false
-                                }]
-                            });
-                        });
-                    </script>
                 </div>
+                <t t-call="event_seating.seat_map"/>
+                <script t-if="theater">
+                    $(document).ready(function() {
+                    registrations = <t t-raw="event.get_registrations_json()"/>;
+                    map = <t t-raw="theater.get_json_disposition()"/>;
+                    seats = <t t-raw="theater.get_json_seats()"/>;
+                    legend = <t t-raw="theater.get_json_legend_items()"/>;
+                    rows = <t t-raw="theater.get_rows()"/>;
+                    odoo.load_seating_chart();
+                    $('#attendees_list').DataTable({
+                    "paging": false,
+                    "info": false,
+                    "columnDefs": [{
+                    "targets": [3],
+                    "orderable": false
+                    }]
+                    });
+                    });
+                </script>
                 <div class="oe_structure"/>
             </div>
         </t>
