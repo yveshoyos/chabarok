@@ -232,7 +232,7 @@ class EventRegistration(models.Model):
     @api.depends('seat_ids', 'seat_ids.registration_id', 'seat_ids.seat_id.label')
     def _get_seats_txt_html(self):
         groups = OrderedDict()
-        for seat_reservation in self.seat_ids.sorted(key=lambda r: r.seat_id.row * 1000 + r.seat_id.column ):
+        for seat_reservation in self.seat_ids.sorted(key=lambda r: r.seat_id.id):
             seat = seat_reservation.seat_id
             row, num = seat.label.split('-')
             groups.setdefault(seat.category, OrderedDict())
