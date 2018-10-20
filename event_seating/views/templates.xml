@@ -4,14 +4,21 @@
     <template id="layout" inherit_id="website.layout" name="Event seating layout" primary="True">
         <xpath expr="//div[@id='wrapwrap']/header" position="replace"/>
         <xpath expr="//div[@id='wrapwrap']/footer" position="replace"/>
+        <xpath expr="//nav[@id='oe_main_menu_navbar']" position="replace"/>
         <xpath expr="//t[@t-call-assets='website.assets_editor'][@t-css='false']" position="after">
             <link rel="stylesheet" href="/event_seating/static/lib/seat-charts/jquery.seat-charts.css"/>
             <link rel="stylesheet" href="/event_seating/static/lib/datatables/datatables.css"/>
             <link rel="stylesheet" href="/event_seating/static/src/css/seating.css"/>
             <script src="/event_seating/static/lib/datatables/datatables.js"/>
             <script src="/event_seating/static/lib/seat-charts/jquery.seat-charts.js"/>
-            <script src="/event_seating/static/src/js/seating.js"/>
+            <script t-if="use_seating_map" src="/event_seating/static/src/js/seating_map.js"/>
+            <script t-else="" src="/event_seating/static/src/js/seating.js"/>
             <t t-raw='theater.get_css_seats_colors()'/>
+            <style>
+                body.o_connected_user {
+                    padding-top: 0 !important;
+                }
+            </style>
         </xpath>
     </template>
 
@@ -20,8 +27,7 @@
         <div class="alert alert-info">
             <div class="container">
                 <div class="text-center">
-                    You can go back to backend by using following link.
-                    <a t-attf-href="/web#return_label=Website&amp;model=#{model}&amp;id=#{res_id}&amp;view_type=form&amp;action=#{website.env.ref(action).id}"><i class="fa fa-arrow-right"/> Go to backend</a>.
+                    <a t-attf-href="/web#return_label=Website&amp;model=#{model}&amp;id=#{res_id}&amp;view_type=form&amp;action=#{website.env.ref(action).id}"><i class="fa fa-arrow-right"/> go to backend</a>.
                     <t t-raw="0"/>
                 </div>
             </div>
@@ -30,12 +36,8 @@
 
 
     <template id="seat_map" name="Event seating map">
-        <div class="row">
-            <div class="col-xs-12">
-                <div id="seat-map">
-                    <div class="front-indicator">Front</div>
-                </div>
-            </div>
+        <div id="seat-map">
+            <div class="front-indicator">Front</div>
         </div>
     </template>
 
@@ -56,7 +58,11 @@
                             <h1 t-field="theater.name"/>
                         </div>
                     </div>
+                </div>
+                <div class="preview">
                     <t t-call="event_seating.seat_map"/>
+                </div>
+                <div class="container mb8">
                     <div class="row">
                         <div class="col-xs-12">
                             <h2>Legend</h2>
@@ -94,6 +100,7 @@
                     <t t-else="">
                         Switch to <a t-attf-href="/event_seating/#{slug(event)}?edit=1">seating mode <i class="fa fa-pencil"/></a>
                     </t>
+                    Switch to <a t-attf-href="/event_seating/#{slug(event)}?tablet=1">tablet version <i class="fa fa-tablet"/></a>
                 </t>
                 <div class="oe_structure"/>
                 <div class="container mb32">
@@ -108,7 +115,9 @@
                             <p>You must select a theater in the event to use this function.</p>
                         </div>
                     </div>
-                    <t t-call="event_seating.seat_map"/>
+                </div>
+                <t t-call="event_seating.seat_map"/>
+                <div class="container mt8">
                     <div class="row" t-if="theater">
                         <div class="col-xs-12 col-lg-5">
                             <h2>Attendees</h2>
@@ -217,6 +226,94 @@
                     </script>
                 </div>
                 <div class="oe_structure"/>
+            </div>
+        </t>
+    </template>
+
+    <!-- Page seat selection -->
+    <template id="seating_map_tablet" name="Seating map">
+        <t t-set="theater" t-value="event.theater_id"/>
+        <t t-set="use_seating_map" t-value="True"/>
+        <t t-call="event_seating.layout">
+            <div id="wrap">
+                <t t-call="event_seating.go_to_backend">
+                    <t t-set="model" t-value="'event.event'"/>
+                    <t t-set="res_id" t-value="theater.id"/>
+                    <t t-set="action" t-value="'event.action_event_view'"/>
+                </t>
+                <div class="oe_structure"/>
+                <div class="container mb32">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <h1>Seating for event "<t t-esc="event.name"/>"</h1>
+                            <label for="reservations_colors">
+                                <input type="checkbox" id="reservations_colors"/>
+                                Use color to display groups
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row" t-if="not theater">
+                        <div class="col-xs-12">
+                            <p>You must select a theater in the event to use this function.</p>
+                        </div>
+                    </div>
+                    <div class="row" t-if="theater">
+                        <div class="col-xs-12">
+                            <h2>Attendees</h2>
+                            <table class="table table-striped" id="attendees_list">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th># of seats</th>
+                                        <th>Seats</th>
+                                        <th/>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="event.registration_ids" t-as="registration">
+                                        <tr class="attendee" t-att-data-id="registration.id">
+                                            <td t-esc="registration.name"/>
+                                            <td>
+                                                <span t-esc="registration.qty"/>
+                                            </td>
+                                            <td>
+                                                <pre class="mb0" t-esc="registration.seats_txt"/>
+                                            </td>
+                                            <td class="display" title="Display on map">
+                                                <i class="fa fa-search fa-fw"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <t t-call="event_seating.seat_map"/>
+                <script t-if="theater">
+                    $(document).ready(function() {
+                        registrations = <t t-raw="event.get_registrations_json()"/>;
+                        map = <t t-raw="theater.get_json_disposition()"/>;
+                        seats = <t t-raw="theater.get_json_seats()"/>;
+                        legend = <t t-raw="theater.get_json_legend_items()"/>;
+                        rows = <t t-raw="theater.get_rows()"/>;
+                        odoo.load_seating_chart();
+                        $('#attendees_list').DataTable({
+                            "paging": false,
+                            "info": false,
+                            "columnDefs": [{
+                                "targets": [3],
+                                "orderable": false
+                            }]
+                        });
+                    });
+                </script>
+                <div class="oe_structure"/>
+            </div>
+            <div id="stop" class="scrollTop">
+                <span>
+                    <a href=""><i class="fa fa-chevron-circle-up fa-4x" aria-hidden="true"/></a>
+                </span>
             </div>
         </t>
     </template>
