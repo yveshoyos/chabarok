@@ -53,7 +53,7 @@ odoo.define('event_seating.seating', function (require) {
         $('.clear_highlighted_seats').click(function () {
             $('.seatCharts-seat.highlight').removeClass('highlight');
         });
-        $('tr.attendee .display').click(function () {
+        $('tr.attendee, tr.attendee .display').click(function () {
             var registration_id = $(this).closest('tr').data('id');
             var seats =
             $('.seatCharts-seat.highlight').removeClass('highlight');
