@@ -306,7 +306,7 @@
             </div>
             <div id="stop" class="scrollTop">
                 <span>
-                    <a href=""><i class="fa fa-chevron-circle-up fa-4" aria-hidden="true"/></a>
+                    <a href=""><i class="fa fa-chevron-circle-up fa-4x" aria-hidden="true"/></a>
                 </span>
             </div>
         </t>

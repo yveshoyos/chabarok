@@ -87,6 +87,7 @@ odoo.define('event_seating.seating', function (require) {
             $('html, body').animate({
                 scrollTop: 0
             }, 800);
+           $('#attendees_list_filter input[type=search]').val('');
             return false;
         });
     }
