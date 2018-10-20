@@ -30,14 +30,17 @@ div.seatCharts-row {
 div.seatCharts-cell {
 	flex-grow: 1;
 	flex-shrink: 1;
+	margin: 1px;
+}
+div.seatCharts-namingLeft, div.seatCharts-namingRight {
+    width: 14px;
 }
 div.seatCharts-seat {
     font-size: 0.6em;
     transition-duration: 2s;
 }
-div.seatCharts-seat.highlight {
-    transform: scale(1.5, 1.5);
-    background: rgba(234, 221, 6, 0.9);
+.preview div.seatCharts-seat {
+    background: none;
     color: #000000;
 }
 li#cart-item-template {
@@ -142,4 +145,16 @@ div.seatCharts-seat.grp22 {
 div.seatCharts-seat.grp23 {
     background-color: rgb(111, 71, 0);
     color: #ffffff;
+}
+div.seatCharts-seat.highlight {
+    transform: scale(1.5, 1.5);
+    background-color: rgba(234, 221, 6, 0.9) !important;
+    color: #000000;
+}
+.scrollTop {
+    position: fixed;
+    right: 5px;
+    bottom: 5px;
+    opacity: 0;
+    transition: all 0.4s ease-in-out 0s;
 }

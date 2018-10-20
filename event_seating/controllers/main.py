@@ -14,6 +14,10 @@ class WebsiteSeatingChart(http.Controller):
 
     @http.route('/event_seating/<model("event.event"):event>', type='http', auth="user", website=True)
     def set_seats(self, event, **kwargs):
+        if kwargs.get('tablet', False) == '1':
+            return request.render("event_seating.seating_map_tablet", {
+                'event': event,
+            })
         return request.render("event_seating.seat_selection", {
             'event': event,
             'edit': kwargs.get('edit', False),
