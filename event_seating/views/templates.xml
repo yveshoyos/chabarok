@@ -271,7 +271,7 @@
                                                 <span t-esc="registration.qty"/>
                                             </td>
                                             <td>
-                                                <span t-esc="registration.seats_html"/>
+                                                <span t-raw="registration.seats_html"/>
                                             </td>
                                             <td class="display" title="Display on map">
                                                 <i class="fa fa-search fa-fw"/>

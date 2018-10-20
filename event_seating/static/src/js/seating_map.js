@@ -4,7 +4,7 @@ odoo.define('event_seating.seating', function (require) {
     var core = require('web.core');
     var _t = core._t;
 
-    var chart;
+    var chart, seat_num = 1;
 
     function add_grp_classes() {
         var grp_num = 0;
