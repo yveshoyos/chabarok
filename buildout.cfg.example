@@ -1,0 +1,9 @@
+[buildout]
+extends = buildout.cfg.template
+
+[odoo]
+options.admin_passwd = admin
+options.db_user = dbuser
+options.db_password = dbpassword
+options.db_host = 127.0.0.1
+

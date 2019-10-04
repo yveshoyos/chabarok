@@ -1,0 +1,43 @@
+########################################################################
+# USAGE
+########################################################################
+#
+# See readme.md
+#
+########################################################################
+
+[buildout]
+parts = directories_setup odoo
+versions = versions
+find-links =
+
+extensions = gp.vcsdevelop
+develop-dir = ./develop-src
+vcs-extend-develop = git+https://github.com/anybox/anybox.recipe.odoo#egg=anybox.recipe.odoo
+vcs-update = True
+
+[directories_setup]
+recipe = z3c.recipe.mkdir
+paths = ${buildout:parts-directory}/community
+        ${buildout:parts-directory}/idealis
+
+[odoo]
+recipe = anybox.recipe.odoo:server
+version = git https://github.com/odoo/odoo.git odoo 11.0 depth=1
+keep-addons-order = True
+apply-requirements-file = True
+
+addons = local ./project_addons/
+         git git@github.com:odoo/enterprise.git parts/odoo/addons-enterprise 11.0
+         git https://github.com/OCA/server-ux.git parts/community/addons-oca-server-ux 11.0
+
+eggs = PyPDF
+
+
+[versions]
+pip=9.0.3
+zc.recipe.egg = 2.0.2
+PyPDF2=1.26.0
+reportlab=3.3.0
+xlwt=1.3.0
+
