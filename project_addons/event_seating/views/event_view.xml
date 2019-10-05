@@ -41,6 +41,32 @@
                 <field name="sequence" widget="handle"/>
                 <field name="sequence_txt"/>
                 <field name="seats_txt"/>
+                <field name="previous_seats_txt"/>
+                <field name="previous_seats_txt" invisible="1"/>
+                <button name="copy_seats"
+                        type="object"
+                        string="Copy"
+                        attrs="{'invisible': [('previous_seats_ids', '=', False)]}"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_event_registration_seats_tree" model="ir.ui.view">
+        <field name="name">event.registration.seats.tree</field>
+        <field name="model">event.registration</field>
+        <field name="inherit_id" ref="event.view_event_registration_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group>
+                    <field name="seats_txt"/>
+                    <field name="previous_registration_id"/>
+                    <field name="previous_seats_txt"/>
+                    <field name="previous_seats_ids" invisible="1"/>
+                    <button name="copy_seats"
+                        type="object"
+                        string="Copy"
+                        attrs="{'invisible': [('previous_seats_ids', '=', False)]}"/>
+                </group>
             </field>
         </field>
     </record>

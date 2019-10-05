@@ -13,6 +13,7 @@ class EventEvent(models.Model):
     _inherit = 'event.event'
 
     theater_id = fields.Many2one('event.theater', string='Theater')
+    previous_event_id = fields.Many2one('event.event', string='Previous Event')
 
     def open_website_seating_url(self):
         return {
@@ -212,6 +213,12 @@ class EventEvent(models.Model):
         informations = self._auto_compute_prepare_registration_info(informations, registration)
         return informations
 
+    @api.one
+    @api.constrains('theater_id', 'previous_event_id.theater_id')
+    def check_disposition_and_names(self):
+        if self.previous_event_id and self.theater_id and self.previous_event_id.theater_id.id != self.theater_id.id:
+            raise ValidationError(_('The previous event selected must have same theater than the one in the event.'))
+
 
 class EventRegistration(models.Model):
     _inherit = 'event.registration'
@@ -222,6 +229,11 @@ class EventRegistration(models.Model):
     seats_html = fields.Text(string='Seats (html)', compute='_get_seats_txt_html', store=True)
     sequence = fields.Integer(string='Sequence', default=100)
     sequence_txt = fields.Integer(string='#', related='sequence', readonly=True)
+    previous_registration_id = fields.Many2one('event.registration', string='Previous registration', compute='_get_previous_registration', store=True)
+    previous_seat_ids = fields.One2many('event.registration.seat', string='Previous seats', related='previous_registration_id.seat_ids', readonly=True)
+    previous_seat_txt = fields.Text(string='Previous seats (text)', related='previous_registration_id.seats_txt', readonly=True)
+    previous_seat_html = fields.Text(string='Previous seats (html)', related='previous_registration_id.seats_html', readonly=True)
+
 
     @api.one
     @api.depends('seat_ids', 'seat_ids.registration_id')
@@ -267,6 +279,26 @@ class EventRegistration(models.Model):
         self.seats_txt = txt
         self.seats_html = html
 
+    @api.one
+    @api.depends('event_id', 'event_id.previous_event_id', 'partner_id', 'name')
+    def _get_previous_registration(self):
+        if self.event_id and self.event_id.previous_event_id:
+        	registration_ids = self.search([
+        		('event_id', '=', self.event_id.previous_event_id.id), 
+        		('partner_id', '=', self.partner_id.id), 
+        		('name', '=', self.name),
+        	])
+        	if not registration_ids:
+        		self.previous_registration_id = False
+        	elif len(registration_ids) == 1:
+        		self.previous_registration_id = registration_ids[0]
+        	else:
+        		registration_ids = registration_ids.filtered(lambda r: len(r.seat_ids) > 0)
+        		if len(registration_ids) == 1:
+        			self.previous_registration_id = registration_ids[0]
+        else:
+        	self.previous_registration_id = False
+
     @api.multi
     def get_registration_data(self):
         self.ensure_one()
@@ -289,6 +321,16 @@ class EventRegistration(models.Model):
             self.env['event.registration.seat'].create({
                 'registration_id': self.id,
                 'seat_id': seat.id
+            })
+        self.check_seats()
+
+    @api.multi
+    def copy_seats(self):
+        self.ensure_one()
+        for registration_seat in self.previous_seat_ids:
+            self.env['event.registration.seat'].create({
+                'registration_id': self.id,
+                'seat_id': registration_seat.seat_id.id
             })
         self.check_seats()
 
