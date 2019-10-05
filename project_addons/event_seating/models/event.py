@@ -327,11 +327,15 @@ class EventRegistration(models.Model):
     @api.multi
     def copy_seats(self):
         self.ensure_one()
+        i = 0
         for registration_seat in self.previous_seat_ids:
+            if i >= self.qty:
+            	break
             self.env['event.registration.seat'].create({
                 'registration_id': self.id,
                 'seat_id': registration_seat.seat_id.id
             })
+            i += 1
         self.check_seats()
 
     @api.multi

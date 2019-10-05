@@ -9,7 +9,7 @@
             <field name="address_id" position="after">
                 <field name="theater_id"/>
             </field>
-            <field name="seats_availability" position="after">
+            <field name="date_tz" position="after">
                 <field name="previous_event_id"/>
             </field>
             <xpath expr="//button[@name='toggle_active']" position="before">
