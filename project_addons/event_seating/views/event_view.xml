@@ -9,6 +9,9 @@
             <field name="address_id" position="after">
                 <field name="theater_id"/>
             </field>
+            <field name="seats_availability" position="after">
+                <field name="previous_event_id"/>
+            </field>
             <xpath expr="//button[@name='toggle_active']" position="before">
                 <button name="open_website_seating_url"
                         type="object"
@@ -51,21 +54,25 @@
         </field>
     </record>
 
-    <record id="view_event_registration_seats_tree" model="ir.ui.view">
-        <field name="name">event.registration.seats.tree</field>
+    <record id="view_event_registration_seats_form" model="ir.ui.view">
+        <field name="name">event.registration.seats.form</field>
         <field name="model">event.registration</field>
         <field name="inherit_id" ref="event.view_event_registration_form"/>
         <field name="arch" type="xml">
             <xpath expr="//sheet" position="inside">
                 <group>
-                    <field name="seats_txt"/>
-                    <field name="previous_registration_id"/>
-                    <field name="previous_seats_txt"/>
-                    <field name="previous_seat_ids" invisible="1"/>
-                    <button name="copy_seats"
-                        type="object"
-                        string="Copy"
-                        attrs="{'invisible': [('previous_seat_ids', '=', False)]}"/>
+                    <group>
+                        <field name="seats_txt"/>
+                        <field name="previous_seats_txt"/>
+                        <field name="previous_seat_ids" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="previous_registration_id"/>
+                        <button name="copy_seats"
+                            type="object"
+                            string="Copy seats"
+                            attrs="{'invisible': [('previous_seat_ids', '=', False)]}"/>
+                    </group>
                 </group>
             </xpath>
         </field>
