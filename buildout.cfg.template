@@ -28,7 +28,6 @@ keep-addons-order = True
 apply-requirements-file = True
 
 addons = local ./project_addons/
-         # git git@github.com:odoo/enterprise.git parts/odoo/addons-enterprise 11.0
          git https://github.com/OCA/server-ux.git parts/community/addons-oca-server-ux 11.0
 
 eggs = PyPDF
