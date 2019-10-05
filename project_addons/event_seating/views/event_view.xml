@@ -67,7 +67,7 @@
                         string="Copy"
                         attrs="{'invisible': [('previous_seats_ids', '=', False)]}"/>
                 </group>
-            </field>
+            </xpath>
         </field>
     </record>
 
