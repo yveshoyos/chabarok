@@ -92,7 +92,7 @@
             <div id="wrap">
                 <t t-call="event_seating.go_to_backend">
                     <t t-set="model" t-value="'event.event'"/>
-                    <t t-set="res_id" t-value="theater.id"/>
+                    <t t-set="res_id" t-value="event.id"/>
                     <t t-set="action" t-value="'event.action_event_view'"/>
                     <t t-if="edit">
                         Switch to <a t-attf-href="/event_seating/#{slug(event)}">display mode <i class="fa fa-map"/></a>
@@ -238,7 +238,7 @@
             <div id="wrap">
                 <t t-call="event_seating.go_to_backend">
                     <t t-set="model" t-value="'event.event'"/>
-                    <t t-set="res_id" t-value="theater.id"/>
+                    <t t-set="res_id" t-value="event.id"/>
                     <t t-set="action" t-value="'event.action_event_view'"/>
                 </t>
                 <div class="oe_structure"/>
