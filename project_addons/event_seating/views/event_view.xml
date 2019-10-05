@@ -42,11 +42,11 @@
                 <field name="sequence_txt"/>
                 <field name="seats_txt"/>
                 <field name="previous_seats_txt"/>
-                <field name="previous_seats_txt" invisible="1"/>
+                <field name="previous_seat_ids" invisible="1"/>
                 <button name="copy_seats"
                         type="object"
                         string="Copy"
-                        attrs="{'invisible': [('previous_seats_ids', '=', False)]}"/>
+                        attrs="{'invisible': [('previous_seat_ids', '=', False)]}"/>
             </field>
         </field>
     </record>
@@ -61,11 +61,11 @@
                     <field name="seats_txt"/>
                     <field name="previous_registration_id"/>
                     <field name="previous_seats_txt"/>
-                    <field name="previous_seats_ids" invisible="1"/>
+                    <field name="previous_seat_ids" invisible="1"/>
                     <button name="copy_seats"
                         type="object"
                         string="Copy"
-                        attrs="{'invisible': [('previous_seats_ids', '=', False)]}"/>
+                        attrs="{'invisible': [('previous_seat_ids', '=', False)]}"/>
                 </group>
             </xpath>
         </field>

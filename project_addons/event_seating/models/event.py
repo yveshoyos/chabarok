@@ -231,8 +231,8 @@ class EventRegistration(models.Model):
     sequence_txt = fields.Integer(string='#', related='sequence', readonly=True)
     previous_registration_id = fields.Many2one('event.registration', string='Previous registration', compute='_get_previous_registration', store=True)
     previous_seat_ids = fields.One2many('event.registration.seat', string='Previous seats', related='previous_registration_id.seat_ids', readonly=True)
-    previous_seat_txt = fields.Text(string='Previous seats (text)', related='previous_registration_id.seats_txt', readonly=True)
-    previous_seat_html = fields.Text(string='Previous seats (html)', related='previous_registration_id.seats_html', readonly=True)
+    previous_seats_txt = fields.Text(string='Previous seats (text)', related='previous_registration_id.seats_txt', readonly=True)
+    previous_seats_html = fields.Text(string='Previous seats (html)', related='previous_registration_id.seats_html', readonly=True)
 
 
     @api.one
