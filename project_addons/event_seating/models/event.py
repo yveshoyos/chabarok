@@ -309,6 +309,7 @@ class EventRegistration(models.Model):
             'qty': self.qty,
             'seats_count': self.seats_count,
             'seats': [seat.label for seat in self.seat_ids],
+            'previous_seats': [seat.label for seat in self.previous_seat_ids],
         }
 
     @api.multi

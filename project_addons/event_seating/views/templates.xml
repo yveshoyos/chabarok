@@ -181,6 +181,12 @@
                                 Seats
                             </h2>
                             <div id="searched_seats" class="mb16"/>
+                            <div id="previous" class="mb32">
+                            	<h2>
+	                                Previous
+	                            </h2>
+	                            <div id="previous_seats" class="mb16"/>
+                            </div>
                         </div>
                         <div class="col-xs-12 col-lg-3">
                             <h2>Informations</h2>
