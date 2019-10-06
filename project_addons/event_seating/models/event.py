@@ -315,7 +315,7 @@ class EventRegistration(models.Model):
     @api.multi
     def assign_seats(self, seats_label):
         self.ensure_one()
-        seats = self.env['event.theater.seat'].search([('theater_id', '=', self.event_id.id), ('label', 'in', seats_label)])
+        seats = self.env['event.theater.seat'].search([('theater_id', '=', self.event_id.theater_id.id), ('label', 'in', seats_label)])
         if len(seats_label) != len(seats):
             raise ValidationError(_("Some seats couldn't be found. Please check given labels."))
         for seat in seats:
