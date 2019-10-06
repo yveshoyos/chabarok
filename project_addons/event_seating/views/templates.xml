@@ -175,13 +175,19 @@
                             </div>
                             <div id="selected_seats" class="mb16" t-att-style="'display: none;' if theater.display_selected not in ('single', 'both') else None"/>
                             <div id="selected_grouped_seats" class="mb16" t-att-style="'display: none;' if theater.display_selected not in ('group', 'both') else None"/>
+                            <div id="previous" class="mb32 hidden">
+                            	<h2>
+	                                Previous
+	                            </h2>
+	                            <div id="previous_seats" class="mb16"/>
+                            </div>
                         </div>
                         <div t-else="" class="col-xs-12 col-lg-4">
                             <h2>
                                 Seats
                             </h2>
                             <div id="searched_seats" class="mb16"/>
-                            <div id="previous" class="mb32">
+                            <div id="previous" class="mb32 hidden">
                             	<h2>
 	                                Previous
 	                            </h2>

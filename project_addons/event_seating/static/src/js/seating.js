@@ -252,10 +252,10 @@ odoo.define('event_seating.seating', function (require) {
                 $('#searched_seats').html(html_group_seats(seats) || '');
                 if (previous_seats.length > 0) {
                     $('#previous_seats').html(html_group_seats(previous_seats) || '');
-                    $('#previous').show();
+                    $('#previous').removeClass('hidden');
                 }
                 else {
-                    $('#previous').hide();
+                    $('#previous').addClass('hidden');
                 }
             });
             $('tr.attendee .select').click(function () {
