@@ -135,7 +135,6 @@ odoo.define('event_seating.seating', function (require) {
                 reservation_grp[reservation_id] = grp_num % 24;
                 grp_num++;
             }
-            console.log(seat, reservation_grp[reservation_id]);
             $('#' + seat + '.seatCharts-seat').addClass('grp' + reservation_grp[reservation_id]);
         }
     }
@@ -259,7 +258,18 @@ odoo.define('event_seating.seating', function (require) {
                 }
             });
             $('tr.attendee .select').click(function () {
-                $('#assign').val($(this).closest('tr').data('id'));
+                var registration_id = $(this).closest('tr').data('id');
+                var seats = registrations[registration_id].seats;
+                var previous_seats = registrations[registration_id].previous_seats;
+                $('#searched_seats').html(html_group_seats(seats) || '');
+                if (previous_seats.length > 0) {
+                    $('#previous_seats').html(html_group_seats(previous_seats) || '');
+                    $('#previous').removeClass('hidden');
+                }
+                else {
+                    $('#previous').addClass('hidden');
+                }
+                $('#assign').val(registration_id);
                 if (!$.isEmptyObject(selected_seats)) {
                     $('#validate_assign').click();
                 }
@@ -269,7 +279,6 @@ odoo.define('event_seating.seating', function (require) {
                 ajax.jsonRpc('/event_seating/unassign_all_seats', 'call', {
                     registration_id:  registration_id,
                 }).then(function (result) {
-                    console.log(result);
                     if (result.success) {
                         unbook_multiple(Object.values(registrations[registration_id].seats));
                         registrations[registration_id] = result.registration;
@@ -278,6 +287,7 @@ odoo.define('event_seating.seating', function (require) {
                         $table_tr.find('.seats_qty').text(result.registration.qty);
                         $('.unselect_all_seats').click();
                         prepare_seat_informations(registrations);
+                        $table_tr.find('.display').click();
                     }
                     else {
                         alert(result.error);
