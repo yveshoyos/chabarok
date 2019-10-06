@@ -331,6 +331,7 @@ odoo.define('event_seating.seating', function (require) {
                         $table_tr.find('.seats_qty').text(result.registration.qty);
                         $('.unselect_all_seats').click();
                         prepare_seat_informations(registrations);
+                        $table_tr.find('.display').click();
                     }
                     else {
                         alert(result.error);
