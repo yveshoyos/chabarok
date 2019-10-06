@@ -154,29 +154,29 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div t-if="edit" class="col-xs-12 col-lg-4">
-                            <h2>
-                                Seats (<span id="seats_counter">0</span>)
-                                <a href="#" class="btn-xs unselect_all_seats">[remove all]</a>
-                                <a href="#" class="btn-xs clear_highlighted_seats">[clear selection]</a>
-                            </h2>
-                            <div id="form">
-                                <div class="input-group">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-primary" type="button" id="validate_assign">Assign!</button>
-                                    </span>
-                                    <select id="assign" class="form-control">
-                                        <option/>
-                                        <t t-foreach="event.registration_ids" t-as="registration">
-                                            <option t-att-value="registration.id" t-esc="registration.name"/>
-                                        </t>
-                                    </select>
-                                </div>
-                            </div>
-                            <div id="selected_seats" class="mb16" t-att-style="'display: none;' if theater.display_selected not in ('single', 'both') else None"/>
-                            <div id="selected_grouped_seats" class="mb16" t-att-style="'display: none;' if theater.display_selected not in ('group', 'both') else None"/>
-                        </div>
-                        <!--<div t-else="" class="col-xs-12 col-lg-4">-->
+                        <div class="col-xs-12 col-lg-4">
+                        	<t t-if="edit">
+	                            <h2>
+	                                Seats (<span id="seats_counter">0</span>)
+	                                <a href="#" class="btn-xs unselect_all_seats">[remove all]</a>
+	                                <a href="#" class="btn-xs clear_highlighted_seats">[clear selection]</a>
+	                            </h2>
+	                            <div id="form">
+	                                <div class="input-group">
+	                                    <span class="input-group-btn">
+	                                        <button class="btn btn-primary" type="button" id="validate_assign">Assign!</button>
+	                                    </span>
+	                                    <select id="assign" class="form-control">
+	                                        <option/>
+	                                        <t t-foreach="event.registration_ids" t-as="registration">
+	                                            <option t-att-value="registration.id" t-esc="registration.name"/>
+	                                        </t>
+	                                    </select>
+	                                </div>
+	                            </div>
+	                            <div id="selected_seats" class="mb16" t-att-style="'display: none;' if theater.display_selected not in ('single', 'both') else None"/>
+	                            <div id="selected_grouped_seats" class="mb16" t-att-style="'display: none;' if theater.display_selected not in ('group', 'both') else None"/>
+	                        </t>
                             <h2 t-att-class="'mb32' if edit else None">
                                 Seats
                             </h2>
@@ -187,7 +187,7 @@
 	                            </h2>
 	                            <div id="previous_seats" class="mb16"/>
                             </div>
-                        <!--</div>-->
+                        </div>
                         <div class="col-xs-12 col-lg-3">
                             <h2>Informations</h2>
                             <div id="seat_informations">
